@@ -20,21 +20,25 @@ Route::get('/', function () {
 
 // Route::get     ('/users', [\App\Http\Controllers\UserController::class]);
 
-Route::resource('/users', \App\Http\Controllers\UserController::class);
+
+
+
+Auth::routes();
+
+Route::group(['middleware' =>['auth']], function () {
+    
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('/roles', \App\Http\Controllers\UserRoleController::class);
 Route::get('kirim-email','App\Http\Controllers\MailController@index');
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::group(['middleware' =>['admin']], function () {
+        Route::resource('/users', \App\Http\Controllers\UserController::class);
+    
+    });
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+   
+  
